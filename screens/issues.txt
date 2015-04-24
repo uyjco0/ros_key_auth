@@ -1,0 +1,30 @@
+
+********
+Issue 1:
+********
+
+When the browser client is unregistering from the Rosbridge Server, the Rosbridge server starts with error messages as is shown in the screen '05-issue.png'.
+
+It appears that it is an open issue with the Rosbridge Server:
+   - https://code.ros.org/trac/ros/ticket/4030
+   - https://code.ros.org/trac/ros/ticket/3900
+   - https://github.com/ros/ros_comm/issues/111
+   - https://github.com/RobotWebTools/rosbridge_suite/issues/138
+   - https://github.com/RobotWebTools/rosbridge_suite/issues/165
+
+Observations:
+   - The client is running on Chrome 42.0.2311.90
+   - The Rosbridge Server is running for a ROS Indigo installed on Ubuntu 14.04.2/32 bits
+   - The issue ocurrs if the client unregister after publishing some message:
+        - If the client is unregistering without publishing any message, then there is not issue
+
+********
+Issue 2:
+********
+
+How send from the browser client a Javascript Timestamp value to the ROS Node?
+
+Observations:
+   - I was defining for the ROS node a custom message with the types 'time' or 'duration':
+        -  I was trying to use this custom message to send a Javascript Timestamp to the ROS Node, but it was receiving a zero value:
+              - The fields 'secs' and 'nsecs' have zero value

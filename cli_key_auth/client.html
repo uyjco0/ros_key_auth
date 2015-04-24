@@ -1,0 +1,210 @@
+<!--
+
+   'client.html'
+ 
+   Copyright (C) 2015 Jorge Couchet <jorge.couchet at gmail.com>
+
+   This file is part of 'ros_key_auth'
+ 
+   'ros_key_auth' is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+ 
+   'ros_key_auth' is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+ 
+   You should have received a copy of the GNU General Public License
+   along with 'ros_key_auth'.  If not, see <http ://www.gnu.org/licenses/>.
+
+-- >
+
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="The ROS Web client for keyboard dynamics authentication">
+    <meta name="author" content="Jorge Couchet">
+
+    <title>Robots with keyboard dynamics authentication</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="resources/bootstrap/css/bootstrap.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="resources/tools/html5shiv.js"></script>
+      <script src="resources/tools/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+   
+     <!-- Explaining the ROS demo goal -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Keyboard dynamics authentication</h1>
+        <p>A system prototype intended as a complete demo of using the ROS Operating System (ROS). It is implementing a very row user identification through typing biometric features. The user is allowed to interact via Web with the Robot only if he/she matches her/his stored typing biometrics features (keyboard dynamics).</p>
+      </div>
+    </div>
+ 
+    <div class="container">
+      
+       <!-- ********************************************************* -->
+       <!-- The texts in order to evaluate the user keyboard dynamics -->
+       <!-- ********************************************************* -->
+
+      <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+          <form id="f0">
+            <div class="form-group">
+	      <input type="email" class="form-control" id="email1" placeholder="Enter email" disabled>
+            </div>
+            <button type="submit" class="btn btn-default" id="btn0" disabled>Submit</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <p>ROS is a framework that offers a standard way and a common infrastructure to develop, run, share and reuse code for robotics. Thus ROS is enabling a much faster robotics research and development </p>
+          <form id="f1">
+  	    <div class="form-group">
+              <textarea class="form-control" rows="3" id="txta1" placeholder="Please type the above text" disabled></textarea>
+            </div>
+            <button type="submit" class="btn btn-default" id="btn1" disabled>Submit</button>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <p>ROS is a framework that offers a standard way and a common infrastructure to develop, run, share and reuse code for robotics. Thus ROS is enabling a much faster robotics research and development </p>
+          <form id="f2">
+            <div class="form-group">
+              <textarea class="form-control" rows="3" id="txta2" placeholder="Please type the above text" disabled></textarea>
+            </div>
+            <button type="submit" class="btn btn-default" id="btn2" disabled>Submit</button>
+          </form>
+       </div>
+      </div>
+
+
+       <!-- ********************************************************* -->
+       <!--                  The auxiliar modals                      -->
+       <!-- ********************************************************* -->
+
+        <!-- Modal for when there is problem connecting to the BRIDGE SERVER -->
+        <div class="modal fade" id="err_modal" tabindex="-1" role="dialog" aria-labelledby="err_modal_label" aria-hidden="true">
+          <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="err_modal_label">ERROR :(</h4>
+            </div>
+            <div class="modal-body">
+              <p>It is not possible to connect to the ROSBRIDGE SERVER :(</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+           </div>
+          </div>
+        </div>
+
+
+       <!-- Modal for when the connection to the ROSBRIDGE SERVER was closed -->
+        <div class="modal fade" id="close_modal" tabindex="-1" role="dialog" aria-labelledby="close_modal_label" aria-hidden="true">
+          <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="close_modal_label">CONNECTION CLOSED :(</h4>
+            </div>
+            <div class="modal-body">
+              <p>The connection to the ROSBRIDGE SERVER was closed :(</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Modal to show while the ROS network is processing the user authentication -->
+        <div class="modal fade" id="publishing_modal" tabindex="-1" role="dialog" aria-labelledby="publishing_modal_label" aria-hidden="true">
+          <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="publishing_modal_label">PROCESSING :)</h4>
+            </div>
+            <div class="modal-body">
+              <p>Please wait! The authentication is being processed by the server ;)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal to show when the authentication process was ok -->
+        <div class="modal fade" id="ok_modal" tabindex="-1" role="dialog" aria-labelledby="ok_modal_label" aria-hidden="true">
+          <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="ok_modal_label">CONGRATS!! :)</h4>
+            </div>
+            <div class="modal-body">
+              <p>The authentication process was ok! You are able to control the Robot ;)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+       <!-- Modal to show when the authentication process failed -->
+        <div class="modal fade" id="nok_modal" tabindex="-1" role="dialog" aria-labelledby="nok_modal_label" aria-hidden="true">
+          <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="nok_modal_label">AUTHENTICATION FAILED :(</h4>
+            </div>
+            <div class="modal-body">
+              <p>Sorry the authentication failed! Please try again! :(</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Modal to show when the authentication trials are disabled -->
+        <div class="modal fade" id="disable_modal" tabindex="-1" role="dialog" aria-labelledby="disable_modal_label" aria-hidden="true">
+          <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="disabled_modal_label">DISABLED!! :(</h4>
+            </div>
+            <div class="modal-body">
+              <p>Sorry, but the authentication trial have been disabled :(</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div> <!-- /container -->
+
+    <!-- Load Javascript libraries
+    ================================================== -->
+    <script src="resources/jquery/jquery-2.1.3.js"></script>
+    <script src="resources/bootstrap/js/bootstrap.js"></script>
+    <script src="resources/roslib/eventemitter2.min.js"></script>
+    <script src="resources/roslib/roslib.js"></script>
+    <script src="javascripts/client.js"></script>
+
+  </body>
+</html>
